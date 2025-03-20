@@ -4,7 +4,7 @@ const axios = require("axios");
 
 let mainWindow;
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "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";
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 
 function createWindow() {
   mainWindow = new BrowserWindow({
