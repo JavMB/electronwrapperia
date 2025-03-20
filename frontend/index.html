@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OpenRouter AI Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1 class="title">💡 OpenRouter AI Hub</h1>
+    <p class="subtitle">Explora modelos de IA y chatea con OpenRouter</p>
+  </header>
+
+  <nav class="tab-buttons">
+    <button data-tab="chatTab" class="active">Chat IA</button>
+    <button data-tab="modelsTab">Modelos</button>
+  </nav>
+
+  <main>
+    <!-- 🔹 Sección de Chat con OpenRouter -->
+    <section id="chatTab" class="tab-content">
+      <h2>Chat con IA</h2>
+      
+      <!-- Selector de modelos -->
+      <div class="model-selector-container">
+        <div class="model-selector-current">
+          <span class="model-label">Modelo:</span>
+          <span class="selected-model">gpt-4-turbo</span>
+          <span class="arrow-icon down">▼</span>
+        </div>
+        <div class="model-dropdown" style="display: none;">
+          <div class="model-dropdown-search">
+            <input type="text" placeholder="Buscar modelo..." id="modelSearchInput">
+          </div>
+          <div class="model-dropdown-list">
+            <!-- Los modelos se cargarán dinámicamente -->
+            <div class="loading-models">Cargando modelos...</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <textarea id="chatPrompt" placeholder="Escribe tu pregunta..."></textarea>
+        <button id="sendChat">Enviar</button>
+      </div>
+      <div id="chatResult" class="responseBox"></div>
+    </section>
+
+    <!-- 🔹 Sección de Modelos de OpenRouter -->
+    <section id="modelsTab" class="tab-content" style="display: none;">
+      <h2>Explorador de Modelos</h2>
+      
+      <div class="dropdown">
+        <button class="dropbtn">Filtrar modelos</button>
+        <div class="dropdown-content">
+          <a href="#">Newest</a>
+          <a href="#">Pricing: Low to High</a>
+          <a href="#">Pricing: High to Low</a>
+          <a href="#">Context: High to Low</a>
+        </div>
+      </div>
+      
+      <div class="models-list">
+        <!-- Los modelos se cargarán aquí dinámicamente -->
+        <p class="loading">Cargando modelos...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 - OpenRouter AI Explorer</p>
+  </footer>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
