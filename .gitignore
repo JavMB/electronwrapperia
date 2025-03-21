@@ -1,0 +1,7 @@
+# Ignorar dependencias de Node.js
+# Ignorar dependencias de Node.js
+node_modules
+.env
+dist
+build
+.aider*
