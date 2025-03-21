@@ -59,6 +59,8 @@ Para usar el wrapper, necesitas una **API Key** de OpenRouter. Configúrala en u
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "TU_CLAVE_API_DE_OPENROUTER";
 ```
 
+De nota un 9 seria agradable.
+
 
 
 ## 📜 Licencia
