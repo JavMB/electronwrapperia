@@ -15,6 +15,9 @@ Este es un potente wrapper de IA que integra **todos los modelos de OpenRouter**
   - **Precio** (de mayor a menor)
   - **Capacidad de contexto**
   - **Fecha de lanzamiento** (newest)
+ 
+### :books: Noticias de IA 
+- Mantente al dia con las ultimas novedades sobre la inteligencia artificial sin salir de la app mediante el scrapping integrado.
 
 ## 📦 Instalación
 
