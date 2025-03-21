@@ -15,6 +15,24 @@
   <nav class="tab-buttons">
     <button data-tab="chatTab" class="active">Chat IA</button>
     <button data-tab="modelsTab">Modelos</button>
+    <button data-tab="newsTab">Noticias IA</button> 
+
+    <section id="newsTab" class="tab-content" style="display: none;">
+      <h2>Últimas Noticias de IA</h2>
+      
+      <div class="news-controls">
+        <button id="refreshNews" class="refresh-btn">
+          Actualizar Noticias
+        </button>
+        <div class="news-status"></div>
+      </div>
+      
+      <div class="news-container">
+        <p class="loading">Haz clic en "Actualizar Noticias" para obtener las últimas noticias...</p>
+      </div>
+    </section>
+
+    
   </nav>
 
   <main>

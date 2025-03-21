@@ -372,4 +372,92 @@ document.addEventListener('DOMContentLoaded', () => {
       loadModelsForSelector();
     }
   }, 1000);
+
+  // Lógica para la pestaña de noticias
+const refreshNewsBtn = document.getElementById('refreshNews');
+const newsContainer = document.querySelector('.news-container');
+const newsStatus = document.querySelector('.news-status');
+
+// Función para cargar noticias
+async function loadNews() {
+  if (!refreshNewsBtn || !newsContainer) return;
+  
+  try {
+    // Actualizar UI para mostrar que se están cargando
+    refreshNewsBtn.disabled = true;
+    refreshNewsBtn.textContent = 'Cargando...';
+    newsStatus.textContent = 'Obteniendo las últimas noticias...';
+    newsContainer.innerHTML = '<p class="loading">Extrayendo información de artificialintelligence-news.com...</p>';
+    
+    // Llamar a la función de scraping
+    const articles = await window.api.scrapeNews();
+    
+    // Actualizar estado
+    refreshNewsBtn.disabled = false;
+    refreshNewsBtn.textContent = 'Actualizar Noticias';
+    
+    if (!articles || articles.length === 0) {
+      newsContainer.innerHTML = '<div class="no-results">No se encontraron artículos. Intenta nuevamente más tarde.</div>';
+      newsStatus.textContent = 'No se encontraron artículos.';
+      return;
+    }
+    
+    // Mostrar última actualización
+    const now = new Date();
+    newsStatus.textContent = `Última actualización: ${now.toLocaleTimeString()} - ${articles.length} artículos encontrados`;
+    
+    // Renderizar artículos
+    renderNewsArticles(articles);
+  } catch (error) {
+    console.error('Error al cargar noticias:', error);
+    
+    // Actualizar UI para mostrar el error
+    newsContainer.innerHTML = `<div class="no-results">Error al cargar noticias: ${error.message || 'Error desconocido'}</div>`;
+    newsStatus.textContent = 'Error al cargar noticias.';
+    refreshNewsBtn.disabled = false;
+    refreshNewsBtn.textContent = 'Reintentar';
+  }
+}
+
+// Función para renderizar artículos
+function renderNewsArticles(articles) {
+  newsContainer.innerHTML = '';
+  
+  articles.forEach(article => {
+    const articleCard = document.createElement('div');
+    articleCard.className = 'news-card';
+    
+    // Crear contenido HTML para el artículo
+    articleCard.innerHTML = `
+      ${article.image ? `<img src="${article.image}" alt="${article.title}" class="news-image">` : ''}
+      <div class="news-content">
+        <div class="news-date">${article.date}</div>
+        <h3 class="news-title">${article.title}</h3>
+        <p class="news-summary">${truncateText(article.summary, 120)}</p>
+        <div class="news-link">
+          <a href="${article.url}" target="_blank" rel="noopener noreferrer">Leer más</a>
+        </div>
+      </div>
+    `;
+    
+    newsContainer.appendChild(articleCard);
+  });
+}
+
+// Registrar evento de clic para botón de actualizar
+refreshNewsBtn?.addEventListener('click', loadNews);
+});
+
+// Manejar clic en enlaces para abrirlos en navegador externo
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href]');
+  if (link && link.getAttribute('target') === '_blank') {
+    e.preventDefault();
+  
+    if (window.api.openExternalLink) {
+      window.api.openExternalLink(link.getAttribute('href'));
+    } else {
+      window.open(link.getAttribute('href'), '_blank');
+    }
+  }
 });

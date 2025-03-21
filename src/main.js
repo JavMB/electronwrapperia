@@ -1,7 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const axios = require("axios");
-
+const puppeteer = require('puppeteer-core');
+const { shell } = require('electron');
 let mainWindow;
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
@@ -11,7 +12,7 @@ function createWindow() {
     width: 1000,
     height: 700,
     frame: false,
-    fullscreen: true,
+    fullscreen: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"), 
       nodeIntegration: false,
@@ -118,4 +119,99 @@ ipcMain.handle("getOpenRouterModels", async (event, filter) => {
     console.error("Error al obtener modelos:", error);
     throw error;
   }
+});
+
+
+// Manejador para realizar el scraping de noticias
+ipcMain.handle("scrapeNews", async () => {
+  try {
+    console.log("Iniciando scraping de noticias de IA...");
+
+    const findChromePath = () => {
+      if (process.platform === 'win32') {
+        const possiblePaths = [
+          'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+          'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+          path.join(process.env.LOCALAPPDATA, 'Google\\Chrome\\Application\\chrome.exe'),
+        ];
+        
+        for (const path of possiblePaths) {
+          if (require('fs').existsSync(path)) return path;
+        }
+      } else if (process.platform === 'darwin') {
+        return '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+      } else {
+        const possiblePaths = [
+          '/usr/bin/google-chrome',
+          '/usr/bin/google-chrome-stable',
+          '/usr/bin/chromium',
+          '/usr/bin/chromium-browser'
+        ];
+        
+        for (const path of possiblePaths) {
+          if (require('fs').existsSync(path)) return path;
+        }
+      }
+      
+      throw new Error('No se encontró una instalación de Chrome. Por favor instala Google Chrome.');
+    };
+
+    const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: findChromePath(), 
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+    });
+
+    const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+    await page.setViewport({ width: 1280, height: 800 });
+
+    console.log("Navegando a artificialintelligence-news.com...");
+    
+    await page.goto('https://www.artificialintelligence-news.com/', {
+      waitUntil: 'domcontentloaded',
+      timeout: 60000
+    });
+
+    console.log("Página cargada, extrayendo artículos...");
+    
+    const articles = await page.evaluate(() => {
+      const newsItems = [];
+      const elements = document.querySelectorAll('.elementor-heading-title.elementor-size-default a');
+
+      elements.forEach(element => {
+        const title = element.textContent.trim();
+        const url = element.href;
+        
+        if (title && url) {
+          newsItems.push({ title, url });
+        }
+      });
+
+      return newsItems;
+    });
+
+    if (articles.length < 3) {
+      const screenshotPath = path.join(app.getPath('temp'), 'ai-news-screenshot.png');
+      await page.screenshot({ path: screenshotPath, fullPage: true });
+      console.log(`Captura de pantalla guardada en: ${screenshotPath}`);
+    }
+
+    await browser.close();
+    console.log(`Scraping completado: ${articles.length} artículos encontrados`);
+
+    if (articles.length === 0) {
+      throw new Error('No se encontraron artículos en la página. El sitio puede haber cambiado su estructura o estar bloqueando scrapers.');
+    }
+
+    return articles;
+  } catch (error) {
+    console.error("Error al realizar scraping:", error);
+    throw error;
+  }
+});
+
+// Manejar apertura de enlaces externos
+ipcMain.handle("openExternalLink", async (event, url) => {
+  await shell.openExternal(url);
 });
