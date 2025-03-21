@@ -1,4 +1,4 @@
-# 🚀 OpenRouter AI Wrapper
+#  OpenRouter AI Wrapper
 
 Este es un potente wrapper de IA que integra **todos los modelos de OpenRouter**, permitiendo a los usuarios elegir el modelo que desean usar para sus consultas, similar a ChatGPT. Además, cuenta con una funcionalidad avanzada para obtener la lista completa de modelos disponibles y ordenarlos según distintos criterios.
 
