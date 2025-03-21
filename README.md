@@ -43,7 +43,7 @@ npm start
 
 Esto ejecutará la aplicación utilizando Electron.
 
-### 🧠 Consultar Modelos de IA
+### 🧠 Interactuar con Modelos de IA
 Puedes interactuar con cuaquier modelo de IA , incluso modelos muy nuevos que aun no estan listados en la propia web, también hay muchos modelos gratuitos.
 
 
