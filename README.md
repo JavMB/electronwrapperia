@@ -63,8 +63,6 @@ Hay varios modelos gratuitos(free) entonces con obtener una clave api en la pág
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "TU_CLAVE_API_DE_OPENROUTER";
 ```
 
-De nota un 9 seria agradable.
-
 
 
 ## 📜 Licencia
