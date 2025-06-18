@@ -1,4 +1,9 @@
 # ElectronWrapper IA
+![Captura desde 2025-06-18 10-32-44](https://github.com/user-attachments/assets/95c24aaa-9b33-4979-8d59-782292862dc4)
+![Captura desde 2025-06-18 10-32-54](https://github.com/user-attachments/assets/94526834-a749-45ef-8a56-61d4ec81aa30)
+![Captura desde 2025-06-18 10-33-03](https://github.com/user-attachments/assets/2e82095b-16d8-4e19-a9a1-63297c33365c)
+
+
 
 ## Descripción del Proyecto
 
@@ -50,5 +55,5 @@ npm start
 
 ---
 
-*Un proyecto de aprendizaje que marcó mis primeros pasos en el desarrollo con Electron* 🚀
+*Un proyecto de aprendizaje que marcó mis primeros pasos en el desarrollo* 
 
